@@ -23,5 +23,6 @@ module.exports = {
     'no-trailing-spaces': 'warn',
     'key-spacing': 'warn',
     'space-infix-ops': 'warn',
+    'camelcase': 'off',
   },
 }
