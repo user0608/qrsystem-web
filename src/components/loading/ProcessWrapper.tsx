@@ -1,26 +1,26 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ExclamationIcon, XIcon } from '@heroicons/react/outline'
 type Props = {
   loading?: boolean
   error?: boolean
   message?: string
-  size?: 'sm' | 'md' | 'lg' | 'xl'
   showErrorOnly?: boolean
   showSpinnerOnly?: boolean
   omitErrorIfContains?: string
+  centerSpinner?: boolean
   endProcess?: () => void
 }
-export const ProcessInAction = ({
+export const ProcessWrapper: React.FC<Props> = ({
+  children,
   loading,
   message,
   error,
   endProcess,
-  showErrorOnly,
   omitErrorIfContains,
   showSpinnerOnly,
-  size = 'sm',
-}: Props) => {
+  centerSpinner,
+}) => {
   const [isloading, setState] = useState(false)
   const [showErrorContent, setShowError] = useState(false)
   useEffect(() => {
@@ -31,18 +31,16 @@ export const ProcessInAction = ({
       if (endProcess && !error) endProcess() // indica fin del processo, solo si no hay error
     }
   }, [loading])
-
-  // showErrorOnly desabilita el contendio
-  if (loading && !showErrorOnly) {
+  if (loading) {
     return (
-      <div className='flex justify-center my-1'>
+      <div className='relative min-h-[120px]'>
+        <div>{children}</div>
+        <div className=' w-full h-full absolute top-0 left-0 bg-[#FAFBFC]/70 animate-pulse' />
         <svg
           role='status'
-          className={classNames('text-gray-200 animate-spin dark:text-gray-600 fill-blue-600', {
-            'w-6 h-6': size === 'sm',
-            'w-8 h-8': size === 'md',
-            'w-10 h-10': size === 'lg',
-            'w-12 h-12': size === 'xl',
+          className={classNames('text-gray-200 animate-spin fill-blue-600 w-10 h-10 absolute', {
+            'left-[calc(50%-20px)] top-[calc(50%-20px)]': centerSpinner,
+            'left-[calc(50%-20px)] top-[50px]': !centerSpinner,
           })}
           viewBox='0 0 100 101'
           fill='none'
@@ -61,32 +59,27 @@ export const ProcessInAction = ({
   }
   const EmptyBox = () => {
     return (
-      <div
-        className={classNames('my-1', {
-          'h-6': size === 'sm',
-          'h-8': size === 'md',
-          'h-10': size === 'lg',
-          'h-12': size === 'xl',
-        })}
-      />
+      <div className='relative min-h-[120px]'>
+        <div>{children}</div>
+      </div>
     )
   }
   if (showErrorContent && !loading && !showSpinnerOnly && error) {
     if (omitErrorIfContains && message?.toLowerCase().includes(omitErrorIfContains)) return <EmptyBox />
     return (
-      <div
-        className={classNames('flex gap-1 justify-center items-center my-1 text-red-500', {
-          'h-6': size === 'sm',
-          'h-8': size === 'md',
-          'h-10': size === 'lg',
-          'h-12': size === 'xl',
-        })}
-      >
-        <div className='flex w-[95%] justify-center gap-2'>
-          <ExclamationIcon className='w-6' />
-          <p className='text-center'>{message}</p>
+      <div className='relative min-h-[120px]'>
+        <div>{children}</div>
+        <div className=' w-full h-full absolute top-0 left-0 bg-[#FAFBFC]/70' />
+        <div
+          className={classNames('text-red-500 absolute w-full flex justify-center', {
+            'top-[calc(50%)]': centerSpinner,
+            'top-[40px]': !centerSpinner,
+          })}
+        >
+          <ExclamationIcon className='w-6 inline-block' />
+          <p className='text-center inline-block max-w-[550px]'>{message}</p>
+          <XIcon className='inline-block w-5 hover:text-red-800 hover:scale-110' onClick={() => setShowError(false)} />
         </div>
-        <XIcon className='w-5 pt-1 hover:text-red-800 hover:scale-110' onClick={() => setShowError(false)} />
       </div>
     )
   }

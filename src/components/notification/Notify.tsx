@@ -13,7 +13,7 @@ type NotiyItem = {
 
 export const NotifyContext = createContext<(item: NotifyModel) => void>(() => {})
 
-export const NotifyWraper: FC<{ time?: 1000 | 2000 | 3000 | 4000 }> = ({ children, time = 3000 }) => {
+export const NotifyWrapper: FC<{ time?: 1000 | 2000 | 3000 | 4000 }> = ({ children, time = 3000 }) => {
   const [notifications, setNotifications] = useState<NotiyItem[]>([])
 
   const notifier = (item: NotifyModel) => {
@@ -28,7 +28,7 @@ export const NotifyWraper: FC<{ time?: 1000 | 2000 | 3000 | 4000 }> = ({ childre
   }
   return (
     <>
-      <div className='absolute right-2 top-1 select-none'>
+      <div className='absolute right-4 top-3 select-none z-[100]'>
         {notifications.map(n => (
           <Toast key={n.id} notify={n} onClose={() => removeItem(n.id)} />
         ))}
@@ -71,8 +71,7 @@ const Toast = ({ notify, onClose }: { notify: NotiyItem; onClose?: () => void })
   }
   return (
     <div
-      id='toast-success'
-      className='flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800'
+      className='flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 rounded-lg shadow-md bg-white z-[100]'
       role='alert'
     >
       <div

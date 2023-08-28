@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#0052CC] active:bg-[#0052CC] hover:bg-[#0065FF]
+                 text-white py-1 px-2 rounded-md;
+  }
+  .btn-sm {
+    @apply bg-[#0052CC] active:bg-[#0052CC] hover:bg-[#0065FF]
+              text-white py-[2px]  text-sm px-2 rounded-md;
+  }
+
+  .btn-red-sm {
+    @apply bg-rose-600 active:bg-rose-600 hover:bg-rose-700
+    text-white py-[2px]  text-sm px-2 rounded-md;
+  }
+  .btn-primary-sm {
+    @apply bg-[#00aa39] active:bg-[#00aa39] hover:bg-[#009231]
+    text-white py-[2px]  text-sm px-2 rounded-md;
+  }
+}

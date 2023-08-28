@@ -16,7 +16,9 @@ export const joinurl = (baseurl: string, url: string) => {
   }
   return `${baseurl}${url}`
 }
-
+export const transformMeasure = (ref: number, targetRef: number, measure: number) => {
+  return (targetRef * measure) / ref
+}
 
 export async function copyTextToClipboard(text: string) {
   if ('clipboard' in navigator) {
